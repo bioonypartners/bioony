@@ -14,9 +14,8 @@
 <style>
 html,body{margin:0;padding:0;background:#050a1a}
 body{-webkit-text-size-adjust:100%}
-#lnav{background:#050a1a;border-bottom:1px solid rgba(255,255,255,.10);padding:12px 14px;display:flex;gap:10px;overflow-x:auto;white-space:nowrap;direction:ltr;font-family:Roboto,"Helvetica Neue",Arial,Tahoma,sans-serif;scrollbar-width:none}
-#lnav::-webkit-scrollbar{display:none}
-#lnav a{flex:none;padding:10px 20px;border-radius:999px;border:1px solid rgba(255,255,255,.22);background:#0b1130;color:#fff;font-size:15px;font-weight:600;text-decoration:none}
+#lnav{background:#050a1a;border-bottom:1px solid rgba(255,255,255,.10);padding:10px 8px;display:flex;gap:6px;direction:ltr;font-family:Roboto,"Helvetica Neue",Arial,Tahoma,sans-serif}
+#lnav a{flex:1 1 0;min-width:0;padding:9px 2px;border-radius:999px;border:1px solid rgba(255,255,255,.22);background:#0b1130;color:#fff;font-size:clamp(12px,3.5vw,14.5px);font-weight:600;text-align:center;text-decoration:none;white-space:nowrap;overflow:hidden;text-overflow:clip}
 #lnav a.on{background:#fff;color:#050a1a;border-color:#fff}
 #lfoot{background:#050a1a;color:rgba(255,255,255,.55);text-align:center;padding:22px 14px 28px;font-size:13px;font-family:Roboto,"Helvetica Neue",Arial,Tahoma,sans-serif}
 </style>
@@ -28,7 +27,8 @@ body{-webkit-text-size-adjust:100%}
   Array.prototype.forEach.call(document.querySelectorAll("#lnav a"), function(a){ a.href = a.getAttribute("href") + s; }); })();
 </script>
 
-<!-- ===== 1) HERO ===== -->
+<main id="app">
+<!-- BLOCK: Hero (photo + headline + green button) | language: en -->
 <style>
 #bhero{--navy:#050a1a;--green:#22e41f;--btn-text:#04210a;background:var(--navy);color:#fff;font-family:Roboto,"Helvetica Neue",Arial,Tahoma,"Segoe UI",sans-serif;overflow:hidden}
 #bhero *{box-sizing:border-box;font-family:inherit}
@@ -86,10 +86,91 @@ body{-webkit-text-size-adjust:100%}
 })();
 </script>
 
-<!-- ===== 2) PLAYER (کد پلیر صوتی اینجا اضافه می‌شود) ===== -->
-<!-- PLAYER_SLOT -->
+<!-- BLOCK: Audio player (voice brief) | language: en | file: voiceen.mp3 -->
+<style>
+#pc{background:#050a1a;padding:14px 14px 18px;font-family:Roboto,"Helvetica Neue",Arial,Tahoma,"Segoe UI",sans-serif;color:#fff}
+#pc *{box-sizing:border-box;font-family:inherit}
+#pc .pc-card{max-width:760px;margin:0 auto;padding:18px 16px 16px;border-radius:24px;border:1px solid rgba(255,255,255,.14);background:linear-gradient(160deg,#0f1a3d 0%,#0b1130 60%)}
+#pc .pc-top{display:flex;gap:14px;align-items:center}
+#pc .pc-ic{flex:none;width:68px;height:68px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#22377a,#0b1130);display:flex;align-items:center;justify-content:center;box-shadow:inset 0 0 0 2px rgba(255,255,255,.08)}
+#pc .pc-tt{flex:1;min-width:0}
+#pc h3{margin:0 0 4px;font-size:clamp(16px,4.3vw,19px);line-height:1.5;font-weight:700;color:#fff}
+#pc .pc-sub{margin:0;font-size:13px;color:rgba(255,255,255,.6)}
+#pc .pc-speed{flex:none;border:1px solid rgba(255,255,255,.35);background:none;color:#fff;border-radius:999px;padding:5px 12px;font-size:13px;cursor:pointer}
+#pc .pc-wave{position:relative;display:flex;align-items:center;gap:3px;height:46px;margin:14px 0 6px;direction:ltr}
+#pc .pc-wave i{flex:1;border-radius:2px;background:rgba(255,255,255,.28);transition:background .15s}
+#pc .pc-wave i.on{background:#fff}
+#pc .pc-wave input{position:absolute;inset:0;width:100%;height:100%;margin:0;opacity:0;cursor:pointer}
+#pc .pc-time{display:flex;justify-content:space-between;direction:ltr;font-size:13px;color:rgba(255,255,255,.7);font-variant-numeric:tabular-nums}
+#pc .pc-ctl{display:flex;align-items:center;justify-content:center;gap:34px;margin:10px 0 14px;direction:ltr}
+#pc .pc-skip{position:relative;width:48px;height:48px;border:0;background:none;color:#fff;cursor:pointer;padding:0}
+#pc .pc-skip svg{width:48px;height:48px}
+#pc .pc-skip b{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:12px;padding-top:3px}
+#pc .pc-play{width:68px;height:68px;border:0;border-radius:50%;background:#fff;color:#050a1a;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 7px rgba(255,255,255,.14)}
+#pc .pc-play svg{width:28px;height:28px}
+#pc .pc-feat{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+#pc .pc-feat div{padding:12px 8px;border-radius:16px;border:1px solid rgba(255,255,255,.14);background:rgba(5,10,26,.55);text-align:center}
+#pc .pc-feat svg{display:block;margin:0 auto 6px}
+#pc .pc-feat p{margin:0;font-size:12.5px;line-height:1.55;color:rgba(255,255,255,.88)}
+@media(min-width:700px){#pc .pc-feat p{font-size:14px}}
+</style>
 
-<!-- ===== 3) CAROUSEL ===== -->
+<section id="pc" dir="ltr">
+  <div class="pc-card">
+    <audio id="pcAudio" preload="metadata" src="https://cdn.jsdelivr.net/gh/bioonypartners/audio@main/voiceen.mp3"></audio>
+    <div class="pc-top">
+      <div class="pc-ic"><svg viewBox="0 0 24 24" width="34" height="34" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0014 0M12 18v3M9 21h6"/></svg></div>
+      <div class="pc-tt"><h3>What exactly is this project, and what are its benefits?</h3><p class="pc-sub">Bioony · Audio brief</p></div>
+      <button type="button" class="pc-speed" id="pcSpeed" aria-label="Speed">1x</button>
+    </div>
+    <div class="pc-wave" id="pcWave"><input type="range" id="pcSeek" min="0" max="1000" value="0" aria-label="Seek"></div>
+    <div class="pc-time"><span id="pcCur">00:00</span><span id="pcDur">00:00</span></div>
+    <div class="pc-ctl">
+      <button type="button" class="pc-skip" id="pcBack" aria-label="-15s"><svg viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M24 10a14 14 0 1014 14"/><path d="M24 4l-6 6 6 6"/></svg><b>15</b></button>
+      <button type="button" class="pc-play" id="pcPlay" aria-label="Play"><svg id="pcIc" viewBox="0 0 24 24" fill="currentColor"><path d="M7 4.5v15l13-7.5z"/></svg></button>
+      <button type="button" class="pc-skip" id="pcFwd" aria-label="+15s"><svg viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M24 10a14 14 0 11-14 14"/><path d="M24 4l6 6-6 6"/></svg><b>15</b></button>
+    </div>
+    <div class="pc-feat">
+      <div><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="#fff" stroke-width="1.5" stroke-linejoin="round"><path d="M13 2L4 14h7l-1 8 9-12h-7l1-8z"/></svg><p>Dedicated training sessions and a market-entry strategy</p></div>
+      <div><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="#fff" stroke-width="1.5" stroke-linejoin="round"><path d="M12 3l2.7 5.6 6.1.9-4.4 4.3 1 6.1L12 17l-5.4 2.9 1-6.1L3.2 9.5l6.1-.9L12 3z"/></svg><p>Official partnership connected to an international infrastructure with 20 years of experience</p></div>
+      <div><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="#fff" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"><path d="M12 3l8 3v6c0 4.5-3.2 8-8 9-4.8-1-8-4.5-8-9V6l8-3z"/><path d="M8.5 12l2.5 2.5L15.5 10"/></svg><p>No office rent, bulk purchasing or warehousing needed</p></div>
+    </div>
+  </div>
+</section>
+
+<script>
+(function(){
+  var $ = function(i){ return document.getElementById(i); };
+  var a = $("pcAudio"), wave = $("pcWave"), seek = $("pcSeek"), bars = [], N = 56;
+  for (var i = 0; i < N; i++) {
+    var b = document.createElement("i");
+    b.style.height = (22 + Math.round(Math.abs(Math.sin(i * 1.7) * Math.cos(i * 0.55)) * 78)) + "%";
+    wave.insertBefore(b, seek); bars.push(b);
+  }
+  var PLAY = '<path d="M7 4.5v15l13-7.5z"/>', PAUSE = '<path d="M6 4h4v16H6zM14 4h4v16h-4z"/>';
+  function fmt(s){ if (!isFinite(s)) s = 0; var m = Math.floor(s / 60), r = Math.floor(s % 60); return ("0" + m).slice(-2) + ":" + ("0" + r).slice(-2); }
+  function paint(){
+    var d = a.duration || 0, p = d ? a.currentTime / d : 0, on = Math.round(p * N);
+    bars.forEach(function(b, i){ b.className = i < on ? "on" : ""; });
+    $("pcCur").textContent = fmt(a.currentTime); $("pcDur").textContent = fmt(d);
+    if (!seek.dataset.drag) seek.value = Math.round(p * 1000);
+  }
+  a.addEventListener("loadedmetadata", paint); a.addEventListener("timeupdate", paint);
+  a.addEventListener("play", function(){ $("pcIc").innerHTML = PAUSE; });
+  a.addEventListener("pause", function(){ $("pcIc").innerHTML = PLAY; });
+  a.addEventListener("ended", function(){ $("pcIc").innerHTML = PLAY; a.currentTime = 0; paint(); });
+  $("pcPlay").addEventListener("click", function(){ if (a.paused) { var pr = a.play(); if (pr && pr.catch) pr.catch(function(){}); } else a.pause(); });
+  $("pcBack").addEventListener("click", function(){ a.currentTime = Math.max(0, a.currentTime - 15); });
+  $("pcFwd").addEventListener("click", function(){ a.currentTime = Math.min(a.duration || 1e9, a.currentTime + 15); });
+  var sp = [1, 1.25, 1.5, 2, 0.75], si = 0;
+  $("pcSpeed").addEventListener("click", function(){ si = (si + 1) % sp.length; a.playbackRate = sp[si]; this.textContent = sp[si] + "x"; });
+  seek.addEventListener("input", function(){ seek.dataset.drag = 1; if (a.duration) { a.currentTime = a.duration * seek.value / 1000; paint(); } });
+  seek.addEventListener("change", function(){ delete seek.dataset.drag; });
+  paint();
+})();
+</script>
+
+<!-- BLOCK: Image carousel | language: en -->
 <style>
 #cfw{background:#050a1a;padding:40px 0 28px;overflow:hidden;font-family:Inter,system-ui,sans-serif;-webkit-tap-highlight-color:transparent}
 #cfw .cf-stage{position:relative;height:var(--ch,520px);touch-action:pan-y;user-select:none;-webkit-user-select:none}
@@ -185,7 +266,7 @@ body{-webkit-text-size-adjust:100%}
 })();
 </script>
 
-<!-- ===== 4) WHO IS IT FOR ===== -->
+<!-- BLOCK: Who is it for / not for | language: en -->
 <style>
 #qf{background:#050a1a;padding:26px 14px 28px;font-family:inherit;color:#fff}
 #qf .qf-in{max-width:900px;margin:0 auto}
@@ -254,7 +335,7 @@ body{-webkit-text-size-adjust:100%}
 })();
 </script>
 
-<!-- ===== 5) SLOGAN ===== -->
+<!-- BLOCK: 30-minute slogan | language: en -->
 <style>
 #sl30{background:#050a1a;padding:14px 14px 22px;font-family:Roboto,"Helvetica Neue",Arial,Tahoma,"Segoe UI",sans-serif;color:#fff}
 #sl30 *{box-sizing:border-box;font-family:inherit}
@@ -289,7 +370,7 @@ body{-webkit-text-size-adjust:100%}
 })();
 </script>
 
-<!-- ===== 6) ROADMAP ===== -->
+<!-- BLOCK: 3-step roadmap | language: en -->
 <style>
 #rmap{background:#050a1a;padding:26px 16px 30px;font-family:Roboto,"Helvetica Neue",Arial,Tahoma,"Segoe UI",sans-serif;color:#fff}
 #rmap *{box-sizing:border-box;font-family:inherit}
@@ -318,7 +399,7 @@ body{-webkit-text-size-adjust:100%}
   </div>
 </section>
 
-<!-- ===== 7) FORM ===== -->
+<!-- BLOCK: Registration form (sends to Google Sheet + Telegram) | language: en -->
 <style>
 #bf{--n:#15294d;--n2:#1f3a6b;--f:#e4f1e6;--g:#93d3ab;background:#f1eee7;padding:34px 16px 44px;font-family:Roboto,"Helvetica Neue",Arial,sans-serif;color:var(--n)}
 #bf *{box-sizing:border-box;font-family:inherit}
@@ -513,6 +594,26 @@ body{-webkit-text-size-adjust:100%}
 })();
 </script>
 
+<!-- BLOCK: Direct contact with admin (Telegram ID) | language: en -->
+<style>
+#ct{background:#050a1a;padding:8px 14px 26px;font-family:Roboto,"Helvetica Neue",Arial,Tahoma,"Segoe UI",sans-serif;color:#fff}
+#ct *{box-sizing:border-box;font-family:inherit}
+#ct .ct-card{max-width:760px;margin:0 auto;padding:18px;border-radius:22px;border:1px solid rgba(255,255,255,.14);background:#0b1130;text-align:center}
+#ct h2{margin:0 0 12px;font-size:clamp(18px,4.8vw,24px);line-height:1.4;font-weight:700;color:#fff}
+#ct a{display:inline-flex;align-items:center;gap:8px;padding:12px 26px;border-radius:999px;background:#229ed9;color:#fff;font-weight:700;font-size:clamp(16px,4.2vw,18px);text-decoration:none;direction:ltr}
+#ct svg{width:20px;height:20px;fill:#fff}
+</style>
+
+<section id="ct" dir="ltr">
+  <div class="ct-card">
+    <h2>Contact the admin directly</h2>
+    <a id="ctTg" href="https://t.me/pronet9" target="_blank" rel="noopener"><svg viewBox="0 0 24 24"><path d="M21.9 4.4L18.7 19.6c-.2 1-.9 1.3-1.7.8l-4.7-3.5-2.3 2.2c-.3.3-.5.5-1 .5l.3-4.8 8.8-7.9c.4-.3-.1-.5-.6-.2L6.6 13.6 2 12.2c-1-.3-1-1 .2-1.5L20.2 3.8c.9-.3 1.6.2 1.7.6z"/></svg>@pronet9</a>
+  </div>
+</section>
+</main>
+
+<noscript><p style="color:#fff;text-align:center;padding:40px 16px;font-family:sans-serif">JavaScript is required to view this page.</p></noscript>
 <footer id="lfoot" dir="ltr">© 2026 Bioony. All rights reserved.</footer>
+
 </body>
 </html>

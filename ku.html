@@ -486,10 +486,18 @@ body{-webkit-text-size-adjust:100%}
   var dg = function(s){ return FA ? String(s).replace(/\d/g, function(d){ return "۰۱۲۳۴۵۶۷۸۹"[d]; }) : String(s); };
 
   var REFRE = /^[A-Za-z0-9_]{3,32}$/, ref = "";
+  function cleanRef(v){
+    v = String(v || "").trim();
+    try { v = decodeURIComponent(v.replace(/\+/g, " ")); } catch (e) {}
+    v = v.replace(/^https?:\/\/(www\.)?(t|telegram)\.me\//i, "").replace(/^@/, "");
+    if (/^[\d\s()+\-.]+$/.test(v)) v = v.replace(/\D/g, "");   // شماره‌ی واتساپ ← فقط رقم
+    return v;
+  }
   try {
-    var q = new URLSearchParams(location.search).get("ref");
+    var m = /[?&]ref=([^&#]*)/i.exec(location.search) || /ref=([^&#?]*)/i.exec(location.href);
+    var q = m ? cleanRef(m[1]) : "";
     if (q && REFRE.test(q)) { ref = q; localStorage.setItem("bioony_ref", q); sessionStorage.setItem("bioony_ref", q); }
-    else ref = localStorage.getItem("bioony_ref") || sessionStorage.getItem("bioony_ref") || "";
+    else ref = cleanRef(localStorage.getItem("bioony_ref") || sessionStorage.getItem("bioony_ref") || "");
   } catch (e) {}
   if (!REFRE.test(ref)) ref = "";
 

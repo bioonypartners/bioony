@@ -470,6 +470,8 @@ body{-webkit-text-size-adjust:100%}
     <button class="go" id="bfGo" type="submit">Başvuruyu gönder</button>
   </form>
   <div class="ok" id="bfDone" hidden><i>✓</i><p>Tebrikler! Başvurunuz alındı;<br>en kısa sürede sizinle iletişime geçeceğiz.</p></div>
+  <p class="bbt" id="bbT" hidden style="text-align:center;color:#fff;margin-top:14px">Doğrudan iletişim:</p><div class="bb" id="bfBtns" hidden><a class="t" href="https://t.me/pronet9" target="_blank" rel="noopener">✈️ Telegram (biz)</a><a class="w" href="https://wa.me/12366162627" target="_blank" rel="noopener">💬 WhatsApp (biz)</a><a class="t" id="bfRefTg" hidden target="_blank" rel="noopener">✈️ Referans: Telegram</a><a class="w" id="bfRefWa" hidden target="_blank" rel="noopener">💬 Referans: WhatsApp</a></div>
+<style>.bb{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:16px;direction:ltr}.bb a{padding:12px 20px;border-radius:999px;color:#fff;font-weight:700;text-decoration:none;font-size:16px}.bb .t{background:#229ed9}.bb .w{background:#25d366}.bb[hidden],.bb a[hidden],.bbt[hidden]{display:none}</style>
 </div></section>
 
 <script>
@@ -561,6 +563,13 @@ body{-webkit-text-size-adjust:100%}
     });
   });
 
+  function showBtns(){
+    try {
+      if (ref) { if (/^\d{7,15}$/.test(ref)) { var a = $("bfRefWa"); a.href = "https://wa.me/" + ref; a.hidden = false; }
+                 else { var b = $("bfRefTg"); b.href = "https://t.me/" + ref; b.hidden = false; } }
+      $("bbT").hidden = false; $("bfBtns").hidden = false;
+    } catch (e) {}
+  }
   function err(t, link){ var m = $("bfMsg"); m.innerHTML = ""; m.appendChild(document.createTextNode(t)); if (link) { m.appendChild(document.createTextNode(" ")); var a = document.createElement("a"); a.href = "https://t.me/" + ADMIN_TG; a.target = "_blank"; a.rel = "noopener"; a.textContent = T.eLink; m.appendChild(a); } m.hidden = false; }
   function post(p){
     if (!SCRIPT_URL || /PASTE/.test(SCRIPT_URL)) return Promise.reject(new Error("SCRIPT_URL not set"));
@@ -596,7 +605,7 @@ body{-webkit-text-size-adjust:100%}
       notes: $("bfNote").value.trim(), consent: true, page: location.pathname
     };
     var go = $("bfGo"); go.disabled = true; go.textContent = T.sending;
-    post(p).then(function(){ $("bfForm").hidden = true; $("bfDone").hidden = false; $("bf").scrollIntoView({behavior:"smooth"}); })
+    post(p).then(function(){ showBtns(); $("bfForm").hidden = true; $("bfDone").hidden = false; $("bf").scrollIntoView({behavior:"smooth"}); })
       .catch(function(e){ err(T.eFail + (DEBUG ? " [" + e.message + "]" : ""), true); go.disabled = false; go.textContent = T.submit; });
   });
 })();

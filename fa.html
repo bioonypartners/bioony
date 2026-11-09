@@ -470,6 +470,8 @@ body{-webkit-text-size-adjust:100%}
     <button class="go" id="bfGo" type="submit">ثبت درخواست</button>
   </form>
   <div class="ok" id="bfDone" hidden><i>✓</i><p>تبریک! درخواست شما ثبت شد؛<br>به‌زودی با شما تماس می‌گیریم.</p></div>
+  <p class="bbt" id="bbT" hidden style="text-align:center;color:#fff;margin-top:14px">تماس مستقیم:</p><div class="bb" id="bfBtns" hidden><a class="t" href="https://t.me/pronet9" target="_blank" rel="noopener">✈️ تلگرام ما</a><a class="w" href="https://wa.me/12366162627" target="_blank" rel="noopener">💬 واتساپ ما</a><a class="t" id="bfRefTg" hidden target="_blank" rel="noopener">✈️ تلگرام معرف</a><a class="w" id="bfRefWa" hidden target="_blank" rel="noopener">💬 واتساپ معرف</a></div>
+<style>.bb{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-top:16px;direction:ltr}.bb a{padding:12px 20px;border-radius:999px;color:#fff;font-weight:700;text-decoration:none;font-size:16px}.bb .t{background:#229ed9}.bb .w{background:#25d366}.bb[hidden],.bb a[hidden],.bbt[hidden]{display:none}</style>
 </div></section>
 
 <script>
@@ -555,6 +557,13 @@ body{-webkit-text-size-adjust:100%}
   });
 
   // --- ارسال ---
+  function showBtns(){
+    try {
+      if (ref) { if (/^\d{7,15}$/.test(ref)) { var a = $("bfRefWa"); a.href = "https://wa.me/" + ref; a.hidden = false; }
+                 else { var b = $("bfRefTg"); b.href = "https://t.me/" + ref; b.hidden = false; } }
+      $("bbT").hidden = false; $("bfBtns").hidden = false;
+    } catch (e) {}
+  }
   function err(t, link){ var m = $("bfMsg"); m.innerHTML = ""; m.appendChild(document.createTextNode(t)); if (link) { m.appendChild(document.createTextNode(" ")); var a = document.createElement("a"); a.href = "https://t.me/" + ADMIN_TG; a.target = "_blank"; a.rel = "noopener"; a.textContent = "پیام به ادمین در تلگرام"; m.appendChild(a); } m.hidden = false; }
   var DEBUG = true;   // بعد از تست موفق، این را false کن
   function post(p){
@@ -591,7 +600,7 @@ body{-webkit-text-size-adjust:100%}
       notes: $("bfNote").value.trim(), consent: true, page: location.pathname
     };
     var go = $("bfGo"); go.disabled = true; go.textContent = "در حال ارسال…";
-    post(p).then(function(){ $("bfForm").hidden = true; $("bfDone").hidden = false; $("bf").scrollIntoView({behavior:"smooth"}); })
+    post(p).then(function(){ showBtns(); $("bfForm").hidden = true; $("bfDone").hidden = false; $("bf").scrollIntoView({behavior:"smooth"}); })
       .catch(function(e){ err("ارسال انجام نشد. لطفاً دوباره تلاش کنید یا" + (DEBUG ? " [" + e.message + "]" : ""), true); go.disabled = false; go.textContent = "ثبت درخواست"; });
   });
 })();

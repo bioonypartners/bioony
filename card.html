@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bioony — Invitation Card</title>
+<style>
+*{box-sizing:border-box}body{margin:0;background:#02050f;font-family:Roboto,"Helvetica Neue",Arial,Tahoma,"Segoe UI",sans-serif;color:#e8eefc;padding:14px}
+.tb{max-width:460px;margin:0 auto 14px;display:flex;flex-wrap:wrap;gap:8px;direction:ltr}
+.tb button,.tb input{font:inherit;font-size:14px;border-radius:999px;border:1px solid #22e41f55;background:#0b1530;color:#e8eefc;padding:9px 14px}
+.tb button.on{background:#22e41f;color:#04210a;font-weight:700}.tb input{flex:1;min-width:140px}
+.tb .act{background:#22e41f;color:#04210a;font-weight:700;border:0}
+#card{max-width:460px;margin:0 auto;border-radius:22px;padding:30px 26px;background:radial-gradient(120% 80% at 100% 0,#15294d 0,#050a1a 60%);border:1px solid #22e41f44;box-shadow:0 0 0 1px #000,0 18px 50px #000a;position:relative;overflow:hidden}
+#card:before{content:"";position:absolute;inset:0 0 auto 0;height:4px;background:linear-gradient(90deg,#22e41f,#93d3ab)}
+.logo{font-weight:800;font-size:26px;letter-spacing:.5px;color:#fff}.logo b{color:#22e41f}
+.hi{margin:18px 0 10px;font-size:19px;font-weight:700}
+#card p{margin:0 0 12px;line-height:1.95;font-size:15.5px;color:#d6e0f5}
+#card p.key{color:#22e41f;font-weight:700;font-size:17px;border-inline-start:3px solid #22e41f;padding-inline-start:10px}
+.btn{display:block;margin-top:18px;text-align:center;background:#22e41f;color:#04210a;font-weight:800;font-size:17px;padding:15px 12px;border-radius:14px;text-decoration:none}
+.url{margin-top:12px;text-align:center;font-size:12.5px;color:#93d3ab;direction:ltr;word-break:break-all}
+</style></head><body>
+<div class="tb" id="tb">
+ <button data-l="fa">فارسی</button><button data-l="en">English</button><button data-l="tr">Türkçe</button><button data-l="ar">العربية</button><button data-l="ku">کوردی</button>
+ <input id="ref" placeholder="Referrer ID  @pronet6" dir="ltr">
+ <button class="act" id="save">💾 Save image</button><button class="act" id="copy">🔗 Copy link</button>
+</div>
+<div id="card"><div class="logo">Bio<b>ony</b></div><div class="hi" id="hi"></div><div id="body"></div><a class="btn" id="btn" target="_blank" rel="noopener"></a><div class="url" id="url"></div></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+<script>
+var BASE="https://bioonypartners.github.io/bioony/";
+var PAGE={fa:"fa.html",en:"en.html",tr:"index.html",ar:"ar.html",ku:"ku.html"};
+var T={
+fa:{rtl:1,hi:"سلام دوست گرامی،",p:["تجارت مدرن دیگر در فروش سنتی و پیام‌های تبلیغاتیِ بی‌هدف خلاصه نمی‌شود. ما در حال بازتعریف یک مدل درآمدی مبتنی بر فناوری و ارزش واقعی در سطح بین‌المللی هستیم.","*این یک پیشنهاد عمومی برای همه نیست.","ظرفیت این فاز کاری، تنها برای چند نفر از افرادی در نظر گرفته شده که دیدگاه باز، انضباط کاری و درک درستی از اهرم‌های تجاری نوآورانه دارند.","اگر فکر می‌کنید شرایطش را دارید، پیش از هرگونه گفتگوی اختصاصی، چارچوب کاری ما را در محیطی شفاف و بدون قضاوت بررسی کنید و درخواست بررسی وضعیت کاری نمایید."],b:"تکمیل فرم و ارسال برای مصاحبه"},
+en:{hi:"Hello dear friend,",p:["Modern business is no longer limited to traditional selling and aimless promotional messages. We are redefining a revenue model built on technology and real value, at an international level.","*This is not a public offer for everyone.","Capacity in this phase is reserved for only a few people with an open mind, work discipline and a sound understanding of innovative business leverage.","If you think you qualify, before any private conversation, review our working framework in a transparent, judgment-free environment and request an assessment of your working status."],b:"Complete the form & apply for an interview"},
+tr:{hi:"Merhaba değerli dostum,",p:["Modern ticaret artık geleneksel satışa ve amaçsız reklam mesajlarına sığmıyor. Uluslararası ölçekte, teknolojiye ve gerçek değere dayalı bir gelir modelini yeniden tanımlıyoruz.","*Bu, herkese açık bir teklif değildir.","Bu çalışma aşamasının kontenjanı yalnızca açık görüşlü, iş disiplinine sahip ve yenilikçi ticari kaldıraçları doğru anlayan birkaç kişi için ayrılmıştır.","Şartlara sahip olduğunuzu düşünüyorsanız, özel bir görüşmeden önce çalışma çerçevemizi şeffaf ve yargısız bir ortamda inceleyin ve durum değerlendirmesi talep edin."],b:"Formu doldur ve mülakat için gönder"},
+ar:{rtl:1,hi:"مرحباً صديقي العزيز،",p:["لم تعد التجارة الحديثة تقتصر على البيع التقليدي والرسائل الإعلانية العشوائية. نحن نعيد تعريف نموذج دخل قائم على التكنولوجيا والقيمة الحقيقية على المستوى الدولي.","*هذا ليس عرضاً عاماً للجميع.","هذه المرحلة مخصّصة لعدد قليل فقط من الأشخاص أصحاب العقلية المنفتحة والانضباط في العمل والفهم السليم لأدوات الأعمال المبتكرة.","إذا كنت ترى أنك مؤهل، فاطّلع قبل أي حديث خاص على إطار عملنا في بيئة شفافة وبلا أحكام مسبقة، واطلب تقييم وضعك العملي."],b:"أكمل النموذج وقدّم لطلب المقابلة"},
+ku:{rtl:1,hi:"سڵاو هاوڕێی ئازیز،",p:["بازرگانیی نوێ چیتر تەنیا فرۆشتنی تەقلیدی و پەیامە ڕیکلامییە بێ ئامانجەکان نییە. ئێمە مۆدێلێکی داهات دووبارە پێناسە دەکەین کە لەسەر تەکنەلۆژیا و بەهای ڕاستەقینە بنیات نراوە، لە ئاستی نێودەوڵەتیدا.","*ئەمە پێشنیارێکی گشتی بۆ هەمووان نییە.","توانای ئەم قۆناغە تەنیا بۆ چەند کەسێک دیاری کراوە کە بیرکردنەوەی کراوە، دیسپلینی کار و تێگەیشتنی دروستیان لە ئامرازە بازرگانییە نوێیەکان هەیە.","ئەگەر پێت وایە مەرجەکانت هەیە، پێش هەر گفتوگۆیەکی تایبەت، چوارچێوەی کارمان لە ژینگەیەکی ڕوون و بێ حوکمدا ببینە و داوای هەڵسەنگاندنی دۆخی کارت بکە."],b:"فۆرمەکە پڕ بکەرەوە و بۆ چاوپێکەوتن بینێرە"}
+};
+var q=new URLSearchParams(location.search),lang=T[q.get("lang")]?q.get("lang"):"fa";
+function nr(v){v=String(v||"");try{v=decodeURIComponent(v)}catch(e){}v=v.trim().replace(/^https?:\/\/(www\.)?(t\.me|telegram\.me)\//i,"").replace(/^@+/,"").replace(/[?\/].*$/,"");if(/^[+\d\s()\-]+$/.test(v))v=v.replace(/\D/g,"");return /^[A-Za-z0-9_]{3,32}$/.test(v)?v:""}
+var R=document.getElementById("ref");R.value=q.get("ref")?"@"+nr(q.get("ref")):"";
+function link(){var r=nr(R.value);return BASE+PAGE[lang]+(r?"?ref=@"+r:"")}
+function draw(){var t=T[lang],c=document.getElementById("card");
+ document.documentElement.lang=lang;document.documentElement.dir=t.rtl?"rtl":"ltr";
+ document.getElementById("hi").textContent=t.hi;
+ document.getElementById("body").innerHTML=t.p.map(function(x){return x[0]=="*"?'<p class="key">'+x.slice(1)+'</p>':'<p>'+x+'</p>'}).join("");
+ var b=document.getElementById("btn");b.textContent=t.b;b.href=link();
+ document.getElementById("url").textContent=link().replace("https://","");
+ [].forEach.call(document.querySelectorAll("[data-l]"),function(e){e.className=e.dataset.l==lang?"on":""})}
+[].forEach.call(document.querySelectorAll("[data-l]"),function(e){e.onclick=function(){lang=e.dataset.l;draw()}});
+R.oninput=draw;
+document.getElementById("copy").onclick=function(){navigator.clipboard.writeText(link()).then(function(){alert("✓")})};
+document.getElementById("save").onclick=function(){
+ if(!window.html2canvas){alert("html2canvas not loaded — check internet");return}
+ html2canvas(document.getElementById("card"),{scale:2,backgroundColor:"#02050f"}).then(function(c){c.toBlob(function(bl){
+  var f=new File([bl],"card-"+lang+".png",{type:"image/png"});
+  if(navigator.canShare&&navigator.canShare({files:[f]})){navigator.share({files:[f]}).catch(function(){})}
+  else{var a=document.createElement("a");a.href=URL.createObjectURL(bl);a.download=f.name;a.click()}})})};
+draw();
+</script></body></html>
